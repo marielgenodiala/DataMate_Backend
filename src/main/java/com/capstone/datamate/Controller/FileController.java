@@ -19,7 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.capstone.datamate.Entity.FileEntity;
 import com.capstone.datamate.Message.ResponseFile;
-import com.capstone.datamate.Message.ResponseMessage;
+// import com.capstone.datamate.Message.ResponseMessage;
 import com.capstone.datamate.Service.FileService;
 
 
@@ -30,25 +30,37 @@ public class FileController {
   FileService fileService;
 
   @PostMapping("/upload")
-  public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
-    String message = "";
+  public FileEntity uploadFile(@RequestParam("file") MultipartFile file) {
     try {
-      fileService.store(file);
-
-      message = file.getOriginalFilename() + " successfully uploaded!" ;
-      return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+       FileEntity uploadedFile = fileService.store(file);
+      return uploadedFile;
+      // message = file.getOriginalFilename() + " successfully uploaded!" ;
+      // return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
     } catch (Exception e) {
-      message = file.getOriginalFilename() + " could not be uploaded!" + e.getMessage();
-      return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+      System.out.println("Upload Error");
+      return null;
+      // message = file.getOriginalFilename() + " could not be uploaded!" + e.getMessage();
+      // return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
     }
   }
 
-  @GetMapping("/files/{id}")
-  public ResponseEntity<byte[]> getFile(@PathVariable int id) {
+  @GetMapping("/downloadFile/{id}")
+  public ResponseEntity<byte[]> downloadFile(@PathVariable int id) {
     FileEntity file = fileService.getFile(id);
     return ResponseEntity.ok()
         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFileName() + "\"")
         .body(file.getData());
+  }
+
+  @GetMapping("/file")
+  public FileEntity getFile(@RequestParam int id) {
+    FileEntity file = fileService.getFile(id);
+    if(file != null){
+      return file;
+    }else{
+      System.out.println("File not found!");
+      return null;
+    }
   }
 
   @GetMapping("/files")
