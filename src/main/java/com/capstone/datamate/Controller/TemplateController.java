@@ -1,5 +1,8 @@
 package com.capstone.datamate.Controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.capstone.datamate.Entity.TemplateEntity;
 import com.capstone.datamate.Message.ResponseMessage;
+import com.capstone.datamate.Message.ResponseTemplate;
 import com.capstone.datamate.Service.TemplateService;
 
 @CrossOrigin("http://localhost:3000")
@@ -43,26 +47,15 @@ public class TemplateController {
   }
 
         //get list of templates
-    //   @GetMapping("/files")
-    //   public ResponseEntity<List<ResponseFile>> getListFiles() {
-    //     List<ResponseFile> files = fileService.getAllFiles().map(dbFile -> {
-    //       String fileDownloadUri = ServletUriComponentsBuilder
-    //           .fromCurrentContextPath()
-    //           .path("/files/")
-    //           .path(dbFile.getFileId()+"")
-    //           .toUriString();
+      @GetMapping("/templates")
+      public ResponseEntity<List<ResponseTemplate>> getListFiles() {
+        List<ResponseTemplate> temps = tempServ.getAllTemplates().map(dbTemplate -> {
+          return new ResponseTemplate(
+              dbTemplate.getTemplateId(),
+              dbTemplate.getTemplateName()
+              );
+        }).collect(Collectors.toList());
     
-    //       return new ResponseFile(
-    //           dbFile.getFileId(),
-    //           dbFile.getFileName(),
-    //           dbFile.getFileSize(),
-    //           dbFile.getUploadDate(),
-    //           dbFile.getLatestDateModified(),
-    //           dbFile.isIsdeleted(),
-    //           fileDownloadUri
-    //           );
-    //     }).collect(Collectors.toList());
-    
-    //     return ResponseEntity.status(HttpStatus.OK).body(files);
-    //   }
+        return ResponseEntity.status(HttpStatus.OK).body(temps);
+      }
 }
