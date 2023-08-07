@@ -55,4 +55,17 @@ public class FileServiceImpl implements FileService {
   public List<FileEntity> getDeletedFiles(){
     return fileRepo.findByIsdeleted(true);
   }
+
+  //permanently remove file
+  public String DeleteFile(int id){
+    String msg;
+		if(fileRepo.findById(id) != null) {
+          FileEntity file = fileRepo.findById(id).get();
+          fileRepo.delete(file);
+			    msg = "File ID number " + id + " deleted successfully!";
+		}else {
+			msg = "File ID number " + id + " is NOT found!";
+		}
+		return msg;
+  }
 }
