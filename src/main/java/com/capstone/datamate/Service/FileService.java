@@ -14,6 +14,7 @@ public interface FileService {
         public void init();
       
         public FileEntity store(MultipartFile file) throws IOException;
+        public FileEntity updateFile(int id, MultipartFile file) throws IOException;
         public FileEntity getFile(int id);
         public Stream<FileEntity> getAllFiles();
         public List<FileEntity> getDeletedFiles();

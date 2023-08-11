@@ -41,6 +41,19 @@ public class FileServiceImpl implements FileService {
     return fileRepo.save(File);
   }
 
+  //update file in db
+  public FileEntity updateFile(int id, MultipartFile file) throws IOException {
+    FileEntity fileToUpdate = fileRepo.findById(id).get();
+    if(fileToUpdate != null){
+      String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+      fileToUpdate.setFileName(fileName);
+      fileToUpdate.setFileSize(file.getSize());
+      fileToUpdate.setData(file.getBytes());
+      return fileRepo.save(fileToUpdate);
+    }
+      return fileToUpdate;
+  }
+
   //download file data
   public FileEntity getFile(int id) {
     return fileRepo.findById(id).get();
