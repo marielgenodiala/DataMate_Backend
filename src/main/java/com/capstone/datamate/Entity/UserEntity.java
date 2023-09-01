@@ -21,8 +21,9 @@ public class UserEntity {
 	private String email;
 	private String address;
 	
-	@Column(unique=true)
+	@Column(unique=true, length = 50)
 	private String username;
+	
 	private String password;
 	private String businessName;
 	private String businessType;
