@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,10 +44,24 @@ public class UserController {
 		return userve.getAllUsers();
 	}
 	
+//	@GetMapping("/getByUsername")
+//	public UserEntity findByUsername(@RequestParam String username) {
+//		return userve.findByUsername(username);
+//	}
+	
 	@GetMapping("/getByUsername")
-	public UserEntity findByUsername(@RequestParam String username) {
-		return userve.findByUsername(username);
+	public ResponseEntity<Object> findByUsername(@RequestParam String username) {
+	    UserEntity user = userve.findByUsername(username);
+	    
+	    if (user != null) {
+	        // Username is already taken
+	        return ResponseEntity.status(HttpStatus.OK).body("{\"exists\": true}");
+	    } else {
+	        // Username is available
+	        return ResponseEntity.status(HttpStatus.OK).body("{\"exists\": false}");
+	    }
 	}
+
 	
 	@GetMapping("/getUserById/{userId}")
 	public Optional<UserEntity> findByUserId(@PathVariable int userId){
