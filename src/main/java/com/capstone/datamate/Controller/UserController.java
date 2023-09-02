@@ -44,11 +44,13 @@ public class UserController {
 		return userve.getAllUsers();
 	}
 	
-//	@GetMapping("/getByUsername")
-//	public UserEntity findByUsername(@RequestParam String username) {
-//		return userve.findByUsername(username);
-//	}
+	// return the user details, used in login
+	@GetMapping("/getByUsernameDetails")
+	public UserEntity findByUsernameDetails(@RequestParam String username) {
+		return userve.findByUsername(username);
+	}
 	
+	// return status, used in registration
 	@GetMapping("/getByUsername")
 	public ResponseEntity<Object> findByUsername(@RequestParam String username) {
 	    UserEntity user = userve.findByUsername(username);
