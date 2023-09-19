@@ -32,6 +32,8 @@ public class FileEntity {
 
     @Column
     private boolean isdeleted;
+    @Column
+    private String thumbnailUrl;
 
     @Column(length=1000000)
     @Lob
@@ -45,7 +47,6 @@ public class FileEntity {
     // UserEntity uploader;
 
     public FileEntity(){}
-
     
     public FileEntity(int fileId, String fileName, float fileSize, LocalDateTime uploadDate,
             LocalDateTime latestDateModified, boolean isdeleted, byte[] data) {
@@ -88,64 +89,45 @@ public class FileEntity {
         this.fileSize = fileSize;
     }
 
-
-
-
     public LocalDateTime getUploadDate() {
         return uploadDate;
     }
 
-
-
-
     public void setUploadDate(LocalDateTime uploadDate) {
         this.uploadDate = uploadDate;
     }
-
-
-
-
+    
     public LocalDateTime getLatestDateModified() {
         return latestDateModified;
     }
-
-
-
 
     public void setLatestDateModified(LocalDateTime latestDateModified) {
         this.latestDateModified = latestDateModified;
     }
 
-
-
-
     public boolean isIsdeleted() {
         return isdeleted;
     }
-
-
-
 
     public void setIsdeleted(boolean isdeleted) {
         this.isdeleted = isdeleted;
     }
 
-
-
-
     public byte[] getData() {
         return data;
     }
-
-
-
 
     public void setData(byte[] data) {
         this.data = data;
     }
 
-    
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
 
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
+    }
     
 
 }

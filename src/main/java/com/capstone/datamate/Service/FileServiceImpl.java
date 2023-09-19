@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.capstone.datamate.Entity.FileEntity;
 import com.capstone.datamate.Repository.FileRepository;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class FileServiceImpl implements FileService {
@@ -40,6 +43,10 @@ public class FileServiceImpl implements FileService {
 
     return fileRepo.save(File);
   }
+//  @Override
+//  public FileEntity store(FileEntity fileEntity) {
+//    return fileRepo.save(fileEntity);
+//  }
 
   //update file in db
   public FileEntity updateFile(int id, MultipartFile file) throws IOException {
@@ -80,5 +87,21 @@ public class FileServiceImpl implements FileService {
 			msg = "File ID number " + id + " is NOT found!";
 		}
 		return msg;
+  }
+  @Override
+  public void deleteFile(int id) {
+      Optional<FileEntity> optionalFileEntity = fileRepo.findById(id);
+
+      if (optionalFileEntity.isPresent()) {
+          FileEntity fileEntity = optionalFileEntity.get();
+
+          // Set the isdeleted flag to true
+          fileEntity.setIsdeleted(true);
+
+          // Update the entity in the database
+          fileRepo.save(fileEntity);
+      } else {
+          throw new EntityNotFoundException("File with id " + id + " not found");
+      }
   }
 }

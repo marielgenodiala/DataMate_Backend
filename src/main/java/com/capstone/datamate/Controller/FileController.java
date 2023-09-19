@@ -25,7 +25,7 @@ import com.capstone.datamate.Message.ResponseFile;
 import com.capstone.datamate.Service.FileService;
 
 
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin("http://localhost:3000/")
 @RestController
 public class FileController {
     @Autowired
@@ -36,13 +36,9 @@ public class FileController {
     try {
        FileEntity uploadedFile = fileService.store(file);
       return uploadedFile;
-      // message = file.getOriginalFilename() + " successfully uploaded!" ;
-      // return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
     } catch (Exception e) {
       System.out.println("Upload Error");
       return null;
-      // message = file.getOriginalFilename() + " could not be uploaded!" + e.getMessage();
-      // return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
     }
   }
 
@@ -82,33 +78,71 @@ public class FileController {
     }
   }
 
+//  @GetMapping("/files")
+//  public ResponseEntity<List<ResponseFile>> getListFiles() {
+//    List<ResponseFile> files = fileService.getAllFiles().map(dbFile -> {
+//      String fileDownloadUri = ServletUriComponentsBuilder
+//          .fromCurrentContextPath()
+//          .path("/files/")
+//          .path(dbFile.getFileId()+"")
+//          .toUriString();
+//
+//      return new ResponseFile(
+//          dbFile.getFileId(),
+//          dbFile.getFileName(),
+//          dbFile.getFileSize(),
+//          dbFile.getUploadDate(),
+//          dbFile.getLatestDateModified(),
+//          dbFile.isIsdeleted(),
+//          fileDownloadUri
+//          );
+//    }).collect(Collectors.toList());
+//
+//    return ResponseEntity.status(HttpStatus.OK).body(files);
+//  }
   @GetMapping("/files")
   public ResponseEntity<List<ResponseFile>> getListFiles() {
-    List<ResponseFile> files = fileService.getAllFiles().map(dbFile -> {
-      String fileDownloadUri = ServletUriComponentsBuilder
-          .fromCurrentContextPath()
-          .path("/files/")
-          .path(dbFile.getFileId()+"")
-          .toUriString();
+      List<ResponseFile> files = fileService.getAllFiles()
+              .filter(dbFile -> !dbFile.isIsdeleted()) // Filter out deleted files
+              .map(dbFile -> {
+                  String fileDownloadUri = ServletUriComponentsBuilder
+                          .fromCurrentContextPath()
+                          .path("/files/")
+                          .path(dbFile.getFileId()+"")
+                          .toUriString();
 
-      return new ResponseFile(
-          dbFile.getFileId(),
-          dbFile.getFileName(),
-          dbFile.getFileSize(),
-          dbFile.getUploadDate(),
-          dbFile.getLatestDateModified(),
-          dbFile.isIsdeleted(),
-          fileDownloadUri
-          );
-    }).collect(Collectors.toList());
+                  return new ResponseFile(
+                          dbFile.getFileId(),
+                          dbFile.getFileName(),
+                          dbFile.getFileSize(),
+                          dbFile.getUploadDate(),
+                          dbFile.getLatestDateModified(),
+                          dbFile.isIsdeleted(),
+                          fileDownloadUri
+                  );
+              }).collect(Collectors.toList());
 
-    return ResponseEntity.status(HttpStatus.OK).body(files);
+      return ResponseEntity.status(HttpStatus.OK).body(files);
   }
 
+//  @DeleteMapping("/deleteFile/{id}")
+//  public String deleteFile(@PathVariable int id){
+//    String res = fileService.DeleteFile(id);
+//    System.out.println(res);
+//    return res;
+//  }
   @DeleteMapping("/deleteFile/{id}")
-  public String deleteFile(@PathVariable int id){
-    String res = fileService.DeleteFile(id);
-    System.out.println(res);
-    return res;
+  public ResponseEntity<String> deleteFile(@PathVariable int id) {
+      FileEntity fileEntity = fileService.getFile(id);
+      if (fileEntity == null) {
+          return ResponseEntity.notFound().build();
+      }
+
+      // Delete the file entity from the database
+      fileService.deleteFile(id);
+
+      return ResponseEntity.ok("File deleted successfully");
   }
+
+  
 }
