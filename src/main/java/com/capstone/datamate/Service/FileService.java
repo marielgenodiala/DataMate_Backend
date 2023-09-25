@@ -21,7 +21,8 @@ public interface FileService {
         public FileEntity getFile(int id);
         public Stream<FileEntity> getAllFiles();
         public List<FileEntity> getDeletedFiles();
-        public String DeleteFile(int id);
+        public void permanentlyDeleteFile(int id);
         public void deleteFile(int id);
+        public FileEntity restoreFile(int id);
 
 }

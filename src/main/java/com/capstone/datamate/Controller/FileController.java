@@ -24,6 +24,8 @@ import com.capstone.datamate.Message.ResponseFile;
 // import com.capstone.datamate.Message.ResponseMessage;
 import com.capstone.datamate.Service.FileService;
 
+import jakarta.persistence.EntityNotFoundException;
+
 
 @CrossOrigin("http://localhost:3000/")
 @RestController
@@ -103,7 +105,7 @@ public class FileController {
   @GetMapping("/files")
   public ResponseEntity<List<ResponseFile>> getListFiles() {
       List<ResponseFile> files = fileService.getAllFiles()
-              .filter(dbFile -> !dbFile.isIsdeleted()) // Filter out deleted files
+              .filter(dbFile -> !dbFile.getIsdeleted()) // Filter out deleted files
               .map(dbFile -> {
                   String fileDownloadUri = ServletUriComponentsBuilder
                           .fromCurrentContextPath()
@@ -117,20 +119,46 @@ public class FileController {
                           dbFile.getFileSize(),
                           dbFile.getUploadDate(),
                           dbFile.getLatestDateModified(),
-                          dbFile.isIsdeleted(),
+                          dbFile.getIsdeleted(),
                           fileDownloadUri
                   );
               }).collect(Collectors.toList());
 
       return ResponseEntity.status(HttpStatus.OK).body(files);
   }
+  
+  // get all deleted files
+  @GetMapping("/getAllDeletedFiles")
+  public List<FileEntity> getDeletedFiles(){
+	  return fileService.getDeletedFiles();
+  }
+  
+  // restore file by id
+  @PutMapping("/restoreFile/{id}")
+  public ResponseEntity<String> restoreFile(@PathVariable int id) {
+      try {
+          FileEntity restoredFile = fileService.restoreFile(id);
+          if (restoredFile != null) {
+              return ResponseEntity.ok("File restored successfully");
+          } else {
+              return ResponseEntity.notFound().build();
+          }
+      } catch (EntityNotFoundException e) {
+          return ResponseEntity.notFound().build();
+      }
+  }
 
-//  @DeleteMapping("/deleteFile/{id}")
-//  public String deleteFile(@PathVariable int id){
-//    String res = fileService.DeleteFile(id);
-//    System.out.println(res);
-//    return res;
-//  }
+
+  @DeleteMapping("/deleteFilePermanent/{id}")
+  public ResponseEntity<String> deleteFilePermanent(@PathVariable int id){
+      try {
+          fileService.permanentlyDeleteFile(id);
+          return ResponseEntity.ok("File deleted permanently");
+      } catch (EntityNotFoundException e) {
+          return ResponseEntity.notFound().build();
+      }
+  }
+  
   @DeleteMapping("/deleteFile/{id}")
   public ResponseEntity<String> deleteFile(@PathVariable int id) {
       FileEntity fileEntity = fileService.getFile(id);

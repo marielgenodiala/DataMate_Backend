@@ -105,7 +105,7 @@ public class FileEntity {
         this.latestDateModified = latestDateModified;
     }
 
-    public boolean isIsdeleted() {
+    public boolean getIsdeleted() {
         return isdeleted;
     }
 

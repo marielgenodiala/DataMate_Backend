@@ -77,17 +77,34 @@ public class FileServiceImpl implements FileService {
   }
 
   //permanently remove file
-  public String DeleteFile(int id){
-    String msg;
-		if(fileRepo.findById(id) != null) {
-          FileEntity file = fileRepo.findById(id).get();
-          fileRepo.delete(file);
-			    msg = "File ID number " + id + " deleted successfully!";
-		}else {
-			msg = "File ID number " + id + " is NOT found!";
-		}
-		return msg;
-  }
+	public void permanentlyDeleteFile(int id) {
+	   Optional<FileEntity> optionalFileEntity = fileRepo.findById(id);
+	
+	   if (optionalFileEntity.isPresent()) {
+	       FileEntity fileEntity = optionalFileEntity.get();
+	       fileRepo.delete(fileEntity);
+	   } else {
+	       throw new EntityNotFoundException("File with id " + id + " not found");
+	   }
+	}
+
+  
+	// restore file by id
+	public FileEntity restoreFile(int id) {
+	   Optional<FileEntity> optionalFileEntity = fileRepo.findById(id);
+	
+	   if (optionalFileEntity.isPresent()) {
+	       FileEntity fileEntity = optionalFileEntity.get();
+	
+	       fileEntity.setIsdeleted(false);
+	
+	       return fileRepo.save(fileEntity);
+	   } else {
+	       throw new EntityNotFoundException("File with id " + id + " not found");
+	   }
+	}
+
+  
   @Override
   public void deleteFile(int id) {
       Optional<FileEntity> optionalFileEntity = fileRepo.findById(id);
