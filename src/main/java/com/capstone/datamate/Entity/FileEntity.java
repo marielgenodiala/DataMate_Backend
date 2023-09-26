@@ -4,10 +4,13 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -38,18 +41,16 @@ public class FileEntity {
     @Column(length=1000000)
     @Lob
     private byte[] data;
-
     
 
-
-    // @ManyToOne(targetEntity = UserEntity.class, cascade=CascadeType.MERGE)
-    // @JoinColumn(name = "userid")
-    // UserEntity uploader;
-
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "userId")
+    UserEntity user;
+    
     public FileEntity(){}
     
     public FileEntity(int fileId, String fileName, float fileSize, LocalDateTime uploadDate,
-            LocalDateTime latestDateModified, boolean isdeleted, byte[] data) {
+            LocalDateTime latestDateModified, boolean isdeleted, byte[] data , UserEntity user) {
         this.fileId = fileId;
         this.fileName = fileName;
         this.fileSize = fileSize;
@@ -57,6 +58,7 @@ public class FileEntity {
         this.latestDateModified = latestDateModified;
         this.isdeleted = isdeleted;
         this.data = data;
+        this.user = user;
     }
 
     public FileEntity(String fileName, float fileSize, byte[] data) {
@@ -128,6 +130,13 @@ public class FileEntity {
     public void setThumbnailUrl(String thumbnailUrl) {
         this.thumbnailUrl = thumbnailUrl;
     }
-    
+    public UserEntity getUser() {
+		return user;
+	}
+
+	public void setUser(UserEntity user) {
+		this.user = user;
+	}
+
 
 }

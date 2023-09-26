@@ -80,28 +80,7 @@ public class FileController {
     }
   }
 
-//  @GetMapping("/files")
-//  public ResponseEntity<List<ResponseFile>> getListFiles() {
-//    List<ResponseFile> files = fileService.getAllFiles().map(dbFile -> {
-//      String fileDownloadUri = ServletUriComponentsBuilder
-//          .fromCurrentContextPath()
-//          .path("/files/")
-//          .path(dbFile.getFileId()+"")
-//          .toUriString();
-//
-//      return new ResponseFile(
-//          dbFile.getFileId(),
-//          dbFile.getFileName(),
-//          dbFile.getFileSize(),
-//          dbFile.getUploadDate(),
-//          dbFile.getLatestDateModified(),
-//          dbFile.isIsdeleted(),
-//          fileDownloadUri
-//          );
-//    }).collect(Collectors.toList());
-//
-//    return ResponseEntity.status(HttpStatus.OK).body(files);
-//  }
+
   @GetMapping("/files")
   public ResponseEntity<List<ResponseFile>> getListFiles() {
       List<ResponseFile> files = fileService.getAllFiles()
@@ -172,5 +151,11 @@ public class FileController {
       return ResponseEntity.ok("File deleted successfully");
   }
 
+  @GetMapping("/filesByUserId")
+  public List<FileEntity> getFilesByUserId(@RequestParam int userId) {
+      return fileService.getFilesByUserId(userId);
+  }
+
+  
   
 }
