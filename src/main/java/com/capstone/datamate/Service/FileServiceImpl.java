@@ -105,6 +105,11 @@ public class FileServiceImpl implements FileService {
 	       throw new EntityNotFoundException("File with id " + id + " not found");
 	   }
 	}
+	
+	// get deleted files by user id
+	public List<FileEntity> getDeletedFilesById(int userId) {
+	    return fileRepo.findDeletedFilesByUserId(userId);
+	}
 
   @Override
   public void deleteFile(int id) {

@@ -26,6 +26,7 @@ public interface FileService {
         
         
         public List<FileEntity> getFilesByUserId(int userId);
+        public List<FileEntity> getDeletedFilesById(int userId);
 
 
 }

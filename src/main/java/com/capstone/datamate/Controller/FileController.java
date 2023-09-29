@@ -112,6 +112,12 @@ public class FileController {
 	  return fileService.getDeletedFiles();
   }
   
+  // get deleted files by user id
+  @GetMapping("/deletedFilesByUserId")
+  public List<FileEntity> getDeletedFilesByUserId(@RequestParam int userId) {
+      return fileService.getDeletedFilesById(userId);
+  }
+  
   // restore file by id
   @PutMapping("/restoreFile/{id}")
   public ResponseEntity<String> restoreFile(@PathVariable int id) {
