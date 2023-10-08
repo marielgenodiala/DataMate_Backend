@@ -22,6 +22,9 @@ public class TemplateEntity {
     @Column(length=1000000)
     @Lob
     private byte[] data;
+    
+    @Column
+    private boolean isDownloaded;
 
     public TemplateEntity(){}
 
@@ -60,6 +63,13 @@ public class TemplateEntity {
         this.data = data;
     }
 
+	public boolean isDownloaded() {
+		return isDownloaded;
+	}
+
+	public void setDownloaded(boolean isDownloaded) {
+		this.isDownloaded = isDownloaded;
+	}
     
 
 }

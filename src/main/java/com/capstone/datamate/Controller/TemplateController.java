@@ -38,13 +38,24 @@ public class TemplateController {
     }
   }
 
+//  @GetMapping("/downloadTemplate/{id}")
+//  public ResponseEntity<byte[]> downloadFile(@PathVariable int id) {
+//    TemplateEntity temp = tempServ.getTemplate(id);
+//    return ResponseEntity.ok()
+//        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + temp.getTemplateName() + "\"")
+//        .body(temp.getData());
+//  }
+  
   @GetMapping("/downloadTemplate/{id}")
   public ResponseEntity<byte[]> downloadFile(@PathVariable int id) {
-    TemplateEntity temp = tempServ.getTemplate(id);
-    return ResponseEntity.ok()
-        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + temp.getTemplateName() + "\"")
-        .body(temp.getData());
+      ResponseEntity<byte[]> response = tempServ.downloadFile(id);
+      if (response.getStatusCode() == HttpStatus.OK) {
+          return response;
+      } else {
+          return ResponseEntity.notFound().build();
+      }
   }
+
 
         //get list of templates
       @GetMapping("/templates")
@@ -57,5 +68,20 @@ public class TemplateController {
         }).collect(Collectors.toList());
     
         return ResponseEntity.status(HttpStatus.OK).body(temps);
+      }
+      
+      // get recent downloads
+      @GetMapping("/recentDownloads")
+      public ResponseEntity<List<ResponseTemplate>> getRecentDownloads(
+              @RequestParam(defaultValue = "5") int limit) {
+          List<ResponseTemplate> recentDownloads = tempServ.getRecentDownloads(limit)
+                  .stream()
+                  .map(dbTemplate -> new ResponseTemplate(
+                          dbTemplate.getTemplateId(),
+                          dbTemplate.getTemplateName()
+                  ))
+                  .collect(Collectors.toList());
+
+          return ResponseEntity.status(HttpStatus.OK).body(recentDownloads);
       }
 }
