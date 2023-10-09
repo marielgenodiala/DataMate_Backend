@@ -21,7 +21,7 @@ public class TableEntity {
     @Column
     private String tableName;
     
-    @ManyToOne(targetEntity = DatabaseEntity.class, cascade=CascadeType.ALL)
+    @ManyToOne(targetEntity = DatabaseEntity.class, cascade=CascadeType.MERGE)
     @JoinColumn(name = "databaseId")
     private DatabaseEntity database;
     
