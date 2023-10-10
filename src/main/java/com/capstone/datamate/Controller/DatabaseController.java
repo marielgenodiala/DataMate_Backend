@@ -31,6 +31,11 @@ public class DatabaseController {
         return dbServ.getDatabase(dbId);
     }
 
+    @GetMapping("/getDBByNameAndID")
+    public DatabaseEntity getDB(@RequestParam String dbName, @RequestParam int userid){
+        return dbServ.getDatabaseByNameAndUserId(dbName, userid);
+    }
+
     @GetMapping("/getUserDBs")
     public List<DatabaseEntity> getUserDBs(@RequestParam int userId){
         return dbServ.getDatabaseByUser(userId);

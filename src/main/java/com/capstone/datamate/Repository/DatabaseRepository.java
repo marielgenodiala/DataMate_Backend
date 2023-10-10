@@ -11,4 +11,5 @@ import com.capstone.datamate.Entity.DatabaseEntity;
 public interface DatabaseRepository extends JpaRepository<DatabaseEntity, Integer>{
     
     List<DatabaseEntity> findByUserUserId(int userId);
+    DatabaseEntity findByDatabaseNameAndUserUserId(String name, int id);
 }

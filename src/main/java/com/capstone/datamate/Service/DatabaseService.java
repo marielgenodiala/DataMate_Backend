@@ -22,6 +22,10 @@ public class DatabaseService {
         return dbrepo.findById(id).get();
     }
 
+    public DatabaseEntity getDatabaseByNameAndUserId(String name, int id){
+        return dbrepo.findByDatabaseNameAndUserUserId(name, id);
+    }
+
     public List<DatabaseEntity> getDatabaseByUser(int userId){
         return dbrepo.findByUserUserId(userId);
     }
