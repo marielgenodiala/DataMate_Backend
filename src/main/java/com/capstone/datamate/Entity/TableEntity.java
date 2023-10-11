@@ -1,5 +1,7 @@
 package com.capstone.datamate.Entity;
 
+import java.util.List;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,18 +31,29 @@ public class TableEntity {
     @JoinColumn(name = "userId")
     private UserEntity user;
 
+    @Column
+    private List<String> columns;
+
     
     public TableEntity() {
     }
 
     
 
-    public TableEntity(int tableId, String tableName, DatabaseEntity database, UserEntity user) {
+ 
+
+
+    public TableEntity(int tableId, String tableName, DatabaseEntity database, UserEntity user, List<String> columns) {
         this.tableId = tableId;
         this.tableName = tableName;
         this.database = database;
         this.user = user;
+        this.columns = columns;
     }
+
+
+
+
 
 
     public int getTableId() {
@@ -74,6 +87,19 @@ public class TableEntity {
     public void setUser(UserEntity user) {
         this.user = user;
     }
+
+
+    public List<String> getColumns() {
+        return columns;
+    }
+
+    public void setColumns(List<String> columns) {
+        this.columns = columns;
+    }
+
+
+
+    
 
     
 }

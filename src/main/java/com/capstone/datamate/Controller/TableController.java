@@ -1,5 +1,7 @@
 package com.capstone.datamate.Controller;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,4 +36,15 @@ public class TableController {
     public List<TableEntity> getDBTables(@RequestParam int dbId){
         return tserv.getTablesByDB(dbId);
     }
+
+    @GetMapping("/getTableByName")
+    public TableEntity getTableByName(@RequestParam String tblName){
+        return tserv.getTable(tblName);
+    }
+    @GetMapping("/getTableData")
+    public List<Object[]> getTblData(@RequestParam String tblName) throws SQLException{
+        return tserv.executeNativeQuery(tblName);
+    }
+
+    
 }
