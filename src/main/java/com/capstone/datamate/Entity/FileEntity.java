@@ -43,9 +43,14 @@ public class FileEntity {
     private byte[] data;
     
 
+//    @ManyToOne
+//    @JoinColumn(name = "user_id", referencedColumnName = "userId")
+//    UserEntity user;
+    
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "userId")
-    UserEntity user;
+    @JoinColumn(name = "user_id") 
+    private UserEntity user;
+
     
     public FileEntity(){}
     

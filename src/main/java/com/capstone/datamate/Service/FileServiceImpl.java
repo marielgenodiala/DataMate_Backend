@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.capstone.datamate.Entity.FileEntity;
 import com.capstone.datamate.Entity.UserEntity;
 import com.capstone.datamate.Repository.FileRepository;
+import com.capstone.datamate.Repository.UserRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -24,6 +25,10 @@ public class FileServiceImpl implements FileService {
 
   @Autowired
   FileRepository fileRepo;
+  
+
+  @Autowired
+  UserRepository userRepo;
  //creating the uploads path    
  private final Path root = Paths.get("uploads");
 
@@ -37,18 +42,42 @@ public class FileServiceImpl implements FileService {
     }
   }
 
-  //save file in db
-  public FileEntity store(MultipartFile file) throws IOException {
-    String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-    FileEntity File = new FileEntity(fileName, file.getSize(), file.getBytes());
+  
+  //updated save file in db that handle duplicate files
+  public FileEntity store(MultipartFile file, int userId) throws IOException {
+      String originalFileName = StringUtils.cleanPath(file.getOriginalFilename());
+      String fileName = originalFileName;
+      int fileCount = 1;
 
-    return fileRepo.save(File);
+      while (fileRepo.existsByFileName(fileName)) {
+          fileName = originalFileName.substring(0, originalFileName.lastIndexOf('.'))
+                  + " (" + fileCount + ")" + originalFileName.substring(originalFileName.lastIndexOf('.'));
+          fileCount++;
+      }
+      UserEntity user = userRepo.findById(userId).orElse(null);
+
+      if (user != null) {
+          FileEntity fileEntity = new FileEntity(fileName, file.getSize(), file.getBytes());
+          fileEntity.setUser(user);
+          return fileRepo.save(fileEntity);
+      } else {
+          throw new EntityNotFoundException("User with ID " + userId + " not found");
+      }
+
   }
 
+
+
   //fetch files not deleted and is uploaded by the user
+//  public List<FileEntity> getFilesByUserId(int userId) {
+//	    return fileRepo.findFilesByUserIdAndIsNotDeleted(userId);
+//	}
+  
+  //updated
   public List<FileEntity> getFilesByUserId(int userId) {
-	    return fileRepo.findFilesByUserIdAndIsNotDeleted(userId);
+	    return fileRepo.findFilesByUserUserIdAndIsdeletedFalse(userId);
 	}
+
 
 
   //update file in db

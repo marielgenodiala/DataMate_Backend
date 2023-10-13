@@ -14,9 +14,8 @@ import com.capstone.datamate.Entity.FileEntity;
 @Repository
 public interface FileRepository extends JpaRepository<FileEntity,Integer>{
     public List<FileEntity> findByIsdeleted (boolean isdeleted);
-    // public List<FileEntity> findAllByDeletedAndCreatorUserid (boolean isdeleted, int userId);
-    @Query("SELECT f FROM FileEntity f WHERE f.user.userId = :userId AND f.isdeleted = false")
-    public List<FileEntity> findFilesByUserIdAndIsNotDeleted(@Param("userId") int userId);
+    boolean existsByFileName(String fileName);
+    List<FileEntity> findFilesByUserUserIdAndIsdeletedFalse(int userId);
     
     // get deleted files by user id
     @Query("SELECT f FROM FileEntity f WHERE f.user.id = :userId AND f.isdeleted = true")

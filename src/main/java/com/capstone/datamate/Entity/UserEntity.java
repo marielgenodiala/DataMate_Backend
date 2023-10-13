@@ -57,6 +57,7 @@ public class UserEntity {
 	public int getUserId() {
 		return userId;
 	}
+	
 
 	public String getFirstName() {
 		return firstName;

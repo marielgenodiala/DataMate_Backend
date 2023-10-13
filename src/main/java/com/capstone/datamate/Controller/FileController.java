@@ -33,16 +33,20 @@ public class FileController {
     @Autowired
   FileService fileService;
 
-  @PostMapping("/upload")
-  public FileEntity uploadFile(@RequestParam("file") MultipartFile file) {
-    try {
-       FileEntity uploadedFile = fileService.store(file);
-      return uploadedFile;
-    } catch (Exception e) {
-      System.out.println("Upload Error");
-      return null;
+   //updated uploaded by user
+    @PostMapping("/upload")
+    public FileEntity uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("userId") int userId) {
+        try {
+            // Ensure the userId is valid and authenticated
+
+            FileEntity uploadedFile = fileService.store(file, userId);
+            return uploadedFile;
+        } catch (Exception e) {
+            System.out.println("Upload Error");
+            return null;
+        }
     }
-  }
+
 
   @PutMapping("/updateFile/{id}")
   public String updateFile(@PathVariable int id, @RequestParam("file") MultipartFile file){
@@ -157,11 +161,14 @@ public class FileController {
       return ResponseEntity.ok("File deleted successfully");
   }
 
-  @GetMapping("/filesByUserId")
-  public List<FileEntity> getFilesByUserId(@RequestParam int userId) {
+//  @GetMapping("/filesByUserId")
+//  public List<FileEntity> getFilesByUserId(@RequestParam int userId) {
+//      return fileService.getFilesByUserId(userId);
+//  }
+  @GetMapping("/filesByUserId/{userId}")
+  public List<FileEntity> getFilesByUserId(@PathVariable int userId) {
       return fileService.getFilesByUserId(userId);
   }
 
-  
   
 }
