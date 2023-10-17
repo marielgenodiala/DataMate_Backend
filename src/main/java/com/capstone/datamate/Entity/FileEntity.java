@@ -47,8 +47,12 @@ public class FileEntity {
 //    @JoinColumn(name = "user_id", referencedColumnName = "userId")
 //    UserEntity user;
     
+//    @ManyToOne
+//    @JoinColumn(name = "user_id") 
+//    private UserEntity user;
+
     @ManyToOne
-    @JoinColumn(name = "user_id") 
+    @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
     

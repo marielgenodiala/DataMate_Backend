@@ -36,6 +36,8 @@ public class UserEntity {
 	@Column(columnDefinition = "LONGBLOB")
 	private byte[] userImage;
 	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<FileEntity> files;
 
 	public UserEntity() {}
 
