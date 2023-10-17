@@ -76,10 +76,11 @@ public class UserController {
 		return userve.putUser(userId, newUserDetails);
 	}
 	
-	// delete
-	@DeleteMapping("/deleteUser/{userId}")
-	public String deleteUser(@PathVariable int userId) {
-		return userve.deleteUser(userId);
-	}
+
+	//Delete 
+		@DeleteMapping("/deleteUser/{userId}")
+		public String deleteDriver(@PathVariable int userId) {
+			return userve.deleteUser(userId);
+		}
 
 }

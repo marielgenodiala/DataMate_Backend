@@ -66,7 +66,8 @@ public class UserService {
 			throw new Exception("ID Number " + userId + " does not exist!");
 		}
 	}
-	
+
+
 	// delete user account
 	public String deleteUser(int userId) {
 		String msg;
@@ -80,5 +81,6 @@ public class UserService {
 		
 		return msg;
 	}
+
 
 }
