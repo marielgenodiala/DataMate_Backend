@@ -1,8 +1,7 @@
-package com.capstone.datamate.DAO;
+package com.capstone.datamate.Config;
 
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

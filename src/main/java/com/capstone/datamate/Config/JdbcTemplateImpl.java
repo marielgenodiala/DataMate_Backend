@@ -1,4 +1,4 @@
-package com.capstone.datamate.DAO;
+package com.capstone.datamate.Config;
 
 import javax.sql.DataSource;
 
