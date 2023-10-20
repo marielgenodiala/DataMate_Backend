@@ -19,9 +19,16 @@ public class UserService {
 	UserRepository urepo;
 	
 	// create user
-	public UserEntity insertUser(UserEntity user, MultipartFile userImage) throws IOException{
-		user.setUserImage(userImage.getBytes());
-		return urepo.save(user);
+//	public UserEntity insertUser(UserEntity user, MultipartFile userImage) throws IOException{
+//		user.setUserImage(userImage.getBytes());
+//		return urepo.save(user);
+//	}
+	
+	public UserEntity insertUser(UserEntity user, MultipartFile userImage) throws IOException {
+	    if (userImage != null) {
+	        user.setUserImage(userImage.getBytes());
+	    }
+	    return urepo.save(user);
 	}
 	
 	// read
