@@ -33,10 +33,20 @@ public class UserController {
 	UserService userve;
 	
 	// create
-	@PostMapping(value = "/postUser", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-	public UserEntity insertUser(@RequestPart UserEntity user, @RequestPart("userImage") MultipartFile userImage) throws IOException {
-		return userve.insertUser(user, userImage);
+//	@PostMapping(value = "/postUser", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+//	public UserEntity insertUser(@RequestPart UserEntity user, @RequestPart("userImage") MultipartFile userImage) throws IOException {
+//		return userve.insertUser(user, userImage);
+//	}
+	
+	@PostMapping(value = "/postUser", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
+	public UserEntity insertUser(@RequestPart UserEntity user, @RequestPart(value = "userImage", required = false) MultipartFile userImage) throws IOException {
+	    if (userImage != null) {
+	        return userve.insertUser(user, userImage);
+	    } else {
+	        return userve.insertUser(user, null);
+	    }
 	}
+
 	
 	// read
 	@GetMapping("/getAllUsers")
