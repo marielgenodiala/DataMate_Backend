@@ -15,7 +15,7 @@ public class JDBCController {
     @Autowired
     JdbcTemplateImpl jdbc;
     @PostMapping("/convert")
-    public void executeSQL(@RequestParam String sql){
-        jdbc.executeSQL(sql);
+    public void executeSQL(@RequestParam String tblName, @RequestParam String vals, @RequestParam int op){
+        jdbc.executeSQL(tblName, vals, op);
     }
 }

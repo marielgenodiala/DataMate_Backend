@@ -29,8 +29,19 @@ public class JdbcTemplateImpl{
         this.jdbc = new JdbcTemplate(dataSource);
     }
 
-    public void executeSQL(String sql) throws DataAccessException{
-        jdbc.execute(sql);
+    public void executeSQL(String tblName, String strValues, int op) throws DataAccessException{
+        String sqlStatement = "";
+        //op = 1 for CREATE
+        //op = 2 for INSERT
+        if(op == 1){
+            sqlStatement = "CREATE TABLE IF NOT EXISTS " + tblName + " " + strValues;
+        }else if(op == 2){
+            sqlStatement = "INSERT INTO " + tblName + " " + strValues;
+        }
+        if(!sqlStatement.equals("")){
+            jdbc.execute(sqlStatement);
+        }
+        
     }
     
 }
