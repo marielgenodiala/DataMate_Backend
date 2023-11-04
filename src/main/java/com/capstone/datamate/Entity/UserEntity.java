@@ -1,5 +1,6 @@
 package com.capstone.datamate.Entity;
 
+import java.time.Instant;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -35,12 +36,15 @@ public class UserEntity {
 	
 	@Column(columnDefinition = "LONGBLOB")
 	private byte[] userImage;
-	
+	private String verificationCode;
 
+	@Column(name = "verification_code_expiration")
+	private Instant verificationCodeExpiration;
+	
 	public UserEntity() {}
 
 	public UserEntity(int userId, String firstName, String lastName, String email, String address, String username,
-			String password, String businessName, String businessType, byte[] userImage) {
+			String password, String businessName, String businessType, byte[] userImage, String vertificationcode, Instant verificationCodeExpiration) {
 		super();
 		this.userId = userId;
 		this.firstName = firstName;
@@ -52,6 +56,8 @@ public class UserEntity {
 		this.businessName = businessName;
 		this.businessType = businessType;
 		this.userImage = userImage;
+		this.verificationCode = vertificationcode;
+		this.verificationCodeExpiration = verificationCodeExpiration;
 	}
 
 	public int getUserId() {
@@ -131,6 +137,21 @@ public class UserEntity {
 		this.userImage = userImage;
 	}
 	
-	
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+    
+    public Instant getVerificationCodeExpiration() {
+        return verificationCodeExpiration;
+    }
+
+    public void setVerificationCodeExpiration(Instant verificationCodeExpiration) {
+        this.verificationCodeExpiration = verificationCodeExpiration;
+    }
+
 
 }
