@@ -86,11 +86,49 @@ public class UserController {
 		return userve.putUser(userId, newUserDetails);
 	}
 	
+	// delete
+	@DeleteMapping("/deleteUser/{userId}")
+	public String deleteUser(@PathVariable int userId) {
+		return userve.deleteUser(userId);
+	}
+	
+	
+	//forgot password
+	@PostMapping("/forgot-password")
+	public ResponseEntity<String> forgotPassword(@RequestParam String email) {
+	    System.out.println("Received email: " + email); 
+	    UserEntity user = userve.findUserByEmail(email);
+	    if (user != null) {
+	        userve.generateAndSendVerificationCode(user);
+	        return ResponseEntity.ok("Verification code sent successfully");
+	    } 
+	    else {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email not found");
+	    }
+	}
 
-	//Delete 
-		@DeleteMapping("/deleteUser/{userId}")
-		public String deleteDriver(@PathVariable int userId) {
-			return userve.deleteUser(userId);
-		}
+
+	@PostMapping("/verify-code")
+	public ResponseEntity<String> verifyCode(@RequestParam String email, @RequestParam String code) {
+	    UserEntity user = userve.findUserByEmail(email);
+	    if (user != null && userve.isVerificationCodeValid(user, code)) {
+	        return ResponseEntity.ok("Email is verified.");
+	    } else {
+	        return ResponseEntity.badRequest().body("Incorrect code.");
+	    }
+	}
+
+	//reset password
+	@PostMapping("/reset-password")
+	public ResponseEntity<String> resetPassword(@RequestParam String email, @RequestParam String newPassword) {
+	    UserEntity user = userve.findUserByEmail(email);
+	    if (user != null) {
+	        userve.resetPassword(user, newPassword);
+	        return ResponseEntity.ok("Password reset successful.");
+	    } else {
+	        return ResponseEntity.badRequest().body("Something is wrong.");
+	    }
+	}
+
 
 }
