@@ -12,7 +12,11 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-
+    env:
+      DB_DATAMATE_URL: ${{ secrets.DB_DATAMATE_URL }}
+      DB_USERNAME: ${{ secrets.DB_USERNAME }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      
     steps:
       - uses: actions/checkout@v4
 
