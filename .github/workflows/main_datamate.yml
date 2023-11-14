@@ -12,11 +12,7 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-    env:
-      DB_DATAMATE_URL: ${{ secrets.DB_DATAMATE_URL }}
-      DB_USERNAME: ${{ secrets.DB_USERNAME }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      
+
     steps:
       - uses: actions/checkout@v4
 
@@ -54,4 +50,4 @@ jobs:
           app-name: 'Datamate'
           slot-name: 'Production'
           package: '*.jar'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8F9841A84A494A2494AAAD931D321950 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_9C304C6481FF453DB32B80A53242AC70 }}
