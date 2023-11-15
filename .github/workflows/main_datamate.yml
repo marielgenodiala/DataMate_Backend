@@ -13,9 +13,9 @@ jobs:
   build:
     runs-on: windows-latest
     env:
-      DB_DATAMATE_URL: jdbc:mysql://datamate-mysql-server.mysql.database.azure.com:3306/db_datamate?useSSL=true
-      DB_USERNAME: datamateadmin
-      DB_PASSWORD: @01mwerty34567
+      DB_DATAMATE_URL: 'jdbc:mysql://datamate-mysql-server.mysql.database.azure.com:3306/db_datamate?useSSL=true'
+      DB_USERNAME: 'datamateadmin'
+      DB_PASSWORD: '@01mwerty34567'
 
     steps:
       - uses: actions/checkout@v4
